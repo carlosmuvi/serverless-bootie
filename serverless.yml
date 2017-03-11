@@ -20,6 +20,7 @@ service: reactbootie-server
 provider:
   name: aws
   runtime: nodejs4.3
+  profile: ${opt:profile}
 
 # you can overwrite defaults here
 #  stage: dev
@@ -54,9 +55,12 @@ provider:
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
+plugins:
+  - serverless-offline
+
 functions:
   hello:
-    handler: handler.hello
+    handler: handlers.hello
     events:
       - http:
           path: hello
