@@ -19,6 +19,8 @@ provider:
 
 plugins:
   - serverless-offline
+  - serverless-babel-plugin
+
 
 functions:
   hello:
@@ -26,6 +28,14 @@ functions:
     events:
       - http:
           path: hello
+          method: get
+          integration: lambda
+          cors: true
+  getEvents:
+    handler: handlers.getEvents
+    events:
+      - http:
+          path: events
           method: get
           integration: lambda
           cors: true
@@ -48,3 +58,12 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
+
+custom:
+  babelPresets:
+    - latest
+
+  serverless-offline:
+      babelOptions:
+        presets:
+          - es2015
