@@ -1,4 +1,5 @@
-export default (event, context, callback) => {
+'use strict';
+module.exports.default = (event, context, callback) => {
     const response = {
         statusCode: 200,
         body: JSON.stringify({
