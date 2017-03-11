@@ -1,4 +1,1 @@
-'use strict';
-const hello = require('./hello.js').default;
-
-exports.hello = hello;
+export {default as hello} from './hello';
