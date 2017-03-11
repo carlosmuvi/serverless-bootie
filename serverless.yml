@@ -57,6 +57,8 @@ provider:
 
 plugins:
   - serverless-offline
+  - serverless-babel-plugin
+
 
 functions:
   hello:
@@ -107,3 +109,13 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+
+custom:
+  babelPresets:
+    - latest
+
+  serverless-offline:
+      babelOptions:
+        presets:
+          - es2015

@@ -1,1 +1,1 @@
-module.exports.hello = require('./hello');
+export {default as hello} from './hello';
