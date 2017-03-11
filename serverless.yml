@@ -3,6 +3,7 @@ service: reactbootie-server
 provider:
   name: aws
   runtime: nodejs4.3
+  profile: ${opt:profile}
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
   iamRoleStatements:
@@ -16,9 +17,12 @@ provider:
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 
+plugins:
+  - serverless-offline
+
 functions:
   hello:
-    handler: handler.hello
+    handler: handlers.hello
     events:
       - http:
           path: hello
