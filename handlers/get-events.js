@@ -1,22 +1,27 @@
 import MeetupEventService from '../services/MeetupEventService';
 import EventbriteEventService from '../services/EventbriteEventService';
 
-const MEETUP = 'MEETUP';
-const EVENTBRITE = 'EVENTBRITE';
+const MEETUP = 'meetup';
+const EVENTBRITE = 'eventbrite';
+const DEFAULT_PROVIDERS = `${EVENTBRITE}`;
 
 function getEventsHandler(event, context, callback) {
-    const provider = MEETUP;
-    const service = getEventProvider(provider);
-    service.getEvents(
-        {query: event.query},
-        response => callback(null, buildSuccessResponse(response)));
+    const {providers} = event.query;
+    const providerServices = getProviderServices(providers || DEFAULT_PROVIDERS);
+    Promise.all(providerServices.map(service => {
+        return service.getEvents({query: event.query});
+    })).then(providerResponses => {
+        callback(null, providerResponses.reduce((acc, events) => {
+            return acc.concat(events);
+        }, []));
+    }).catch(error => {
+        callback(null, error);
+    });
 }
 
-function buildSuccessResponse(data) {
-    return {
-        statusCode: 200,
-        body: data
-    };
+function getProviderServices(providers) {
+    const providersArray = providers.split(',');
+    return providersArray.map(p => getEventProvider(p.trim()));
 }
 
 function getEventProvider(provider) {
@@ -28,6 +33,8 @@ function getEventProvider(provider) {
         case EVENTBRITE:
             service = new EventbriteEventService();
             break;
+        default:
+            throw new Error(`Unrecognized provider: ${provider}`);
     }
     return service;
 }
