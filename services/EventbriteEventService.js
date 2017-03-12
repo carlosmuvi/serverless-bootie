@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 import Event from '../domain/Event';
 import EventService from './EventService';
 const EVENTBRITE_ACCESS_TOKEN = 'TYHV7J5JQGNZTDYLMAA2';
@@ -22,8 +23,8 @@ export default class EventbriteEventService extends EventService {
                 'location.latitude': query.lat,
                 'location.longitude': query.lng,
                 'location.within': '10km',
-                'start_date.range_start': query.startDate,
-                'start_date.range_end': query.endDate
+                'start_date.range_start': moment(parseInt(query.startTime)).toISOString().split('.')[0],
+                'start_date.range_end': moment(parseInt(query.endTime)).toISOString().split('.')[0]
             }
         }).then(
             (response) => this._mapResponseToEvents(response));

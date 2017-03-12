@@ -10,10 +10,10 @@ const DEFAULT_PROVIDERS = `${EVENTBRITE},${MEETUP},${FACEBOOK}`;
 
 function getEventsHandler(event, context, callback) {
     const query = event.query;
-    const {providers, startDate, endDate} = query;
-    if (!endDate) {
-        query.startDate = moment(startDate).startOf('day').toISOString().split('.')[0];
-        query.endDate = moment(startDate).endOf('day').milliseconds(0).toISOString().split('.')[0];
+    const {providers, startTime, endTime} = query;
+    if (!endTime) {
+        query.startTime = moment(parseInt(startTime)).startOf('day').valueOf();
+        query.endTime = moment(parseInt(startTime)).endOf('day').valueOf();
     }
     const providerServices = getProviderServices(providers || DEFAULT_PROVIDERS);
     Promise.all(providerServices.map(service => {

@@ -1,8 +1,9 @@
 import axios from 'axios';
+import moment from 'moment';
 import Event from '../domain/Event';
 import EventService from './EventService';
 import EventSearch from 'facebook-events-by-location-core';
-const FACEBOOK_ACCESS_TOKEN = 'EAACL1lbHAEsBABSgBiJrEcj8TZCmsZBSAgdcsskZAZCSEAZCC1NgZC8tgznm1FVAK3xzFPPx43CTMWhJrnR0term1Ex6x2hZAPxUSEJD4ZBQaN6FI7u120RfUSaKP3ZC0VIfijdKI7UZAMJuYtIbLqZCBIqZCp1j0wYG6NobRloPAXBpfxW4gC4TL0aGu4VExaObx50ZD';
+const FACEBOOK_ACCESS_TOKEN = 'EAAFG6FGHXSsBAOvIGBwWdUTlfHxsuutc1vpAZBMxc8RsdJZAR2YZCOfGxdj9CZAurHKEZCtZCZARExn5gyBvUJxMEtAw1qCv6UX0rbfJf201p3ueupwj16Rsi34DoF4p6fYhk77NFaT7pbZC9CHoVRxzcdIvp74H8e9qMFgPDYHGBOxGLTPEZAwKiS8nfeDP7tBMZD';
 
 export default class FacebookEventService extends EventService {
 
@@ -20,8 +21,8 @@ export default class FacebookEventService extends EventService {
             lng: query.lng,
             distance: 10000,
             accessToken: FACEBOOK_ACCESS_TOKEN,
-            since: query.startDate,
-            until: query.endDate,
+            since: moment(parseInt(query.startTime)).unix(),
+            until: moment(parseInt(query.endTime)).unix(),
             version: 'v2.8',
         });
         return search.search().then((response) => this._mapResponseToEvents(response));
