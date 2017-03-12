@@ -12,7 +12,9 @@ function getEventsHandler(event, context, callback) {
         return service.getEvents({query: event.query});
     })).then(providerResponses => {
         callback(null, providerResponses.reduce((acc, events) => {
-            return acc.concat(events);
+            return acc
+                .concat(events)
+                .sort((a, b) => b.time - a.time)
         }, []));
     }).catch(error => {
         callback(null, error);
