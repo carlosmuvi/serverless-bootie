@@ -1,36 +1,36 @@
-import getMeetup from 'meetup-api';
-const meetup = getMeetup({
-    key: '41c594d36237b7047500392949287'
-});
+import MeetupEventService from '../services/MeetupEventService';
+import EventbriteEventService from '../services/EventbriteEventService';
 
+const MEETUP = 'MEETUP';
+const EVENTBRITE = 'EVENTBRITE';
 
-export default (event, context, callback) => {
-    const {query} = event;
-    getOpenEvents(query, function (error, event) {
-        if (error) {
-            console.log(error);
-            callback(null, buildResponse(400, error));
-        } else {
-            console.log(event);
-            callback(null, buildResponse(200, event));
-        }
-    });
-};
-
-function getOpenEvents(query, onComplete) {
-    meetup.getOpenEvents({
-        lat: query.lat,
-        lon: query.lon,
-        time: buildTimeIntervalParameter(startTime, endTime),
-        page: 1,
-    }, onComplete);
+function getEventsHandler(event, context, callback) {
+    const provider = MEETUP;
+    const service = getEventProvider(provider);
+    service.getEvents(
+        {query: event.query},
+        response => callback(null, buildSuccessResponse(response)));
 }
 
-const buildTimeIntervalParameter = (s, e) => s + "," + e;
-
-function buildSuccessResponse(body) {
+function buildSuccessResponse(data) {
     return {
         statusCode: 200,
-        body: body
+        body: data
     };
 }
+
+function getEventProvider(provider) {
+    let service;
+    switch (provider) {
+        case MEETUP:
+            service = new MeetupEventService();
+            break;
+        case EVENTBRITE:
+            service = new EventbriteEventService();
+            break;
+    }
+    return service;
+}
+
+export default getEventsHandler;
+

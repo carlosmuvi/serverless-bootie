@@ -1,10 +1,6 @@
 export default class EventService{
 
-    constructor(baseUrl){
-        this.axios = axios.create({
-            baseURL,
-            headers: {}
-        });
+    constructor(){
     }
 
     getEvents(){
