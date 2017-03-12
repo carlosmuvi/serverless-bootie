@@ -6,14 +6,14 @@ const meetup = getMeetup({
     key: '41c594d36237b7047500392949287'
 });
 
-const SOURCE_NAME = "MEETUP";
+const SOURCE_NAME = "meetup";
 
 export default class MeetupEventService extends EventService {
 
     getEvents({query}, callback) {
         return meetup.getOpenEvents({
             lat: query.lat,
-            lon: query.lon,
+            lon: query.lng,
             time: this._getFormattedTimeInterval(query),
             page: 200
         }, this._onMeetupApiResponse(callback));
@@ -39,7 +39,7 @@ export default class MeetupEventService extends EventService {
         return response.results.filter(item => item.venue)
             .map(item => {
                 return new Event(
-                    `meetup-${item.id}`,
+                    `${SOURCE_NAME}-${item.id}`,
                     item.name,
                     item.event_url,
                     item.time,

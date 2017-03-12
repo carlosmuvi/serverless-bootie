@@ -5,7 +5,7 @@ const MEETUP = 'MEETUP';
 const EVENTBRITE = 'EVENTBRITE';
 
 function getEventsHandler(event, context, callback) {
-    const provider = EVENTBRITE;
+    const provider = MEETUP;
     const service = getEventProvider(provider);
     service.getEvents(
         {query: event.query},
