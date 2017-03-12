@@ -1,10 +1,12 @@
 export default class Event {
-    constructor(id, name, time, {lat, lng}, assistants, avgRating) {
+    constructor(id, name, url, time, {lat, lng}, assistants, avgRating, source) {
         this.id = id;
-        this.name = name;
         this.time = time;
+        this.url = url;
+        this.name = name;
         this.latlng = {lat, lng};
         this.assistants = assistants;
         this.avgRating = avgRating;
+        this.source = source;
     }
 }
