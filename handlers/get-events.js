@@ -1,28 +1,34 @@
-import getMeetup from 'meetup-api';
-const meetup = getMeetup({
-    key: '41c594d36237b7047500392949287'
-});
+import MeetupEventService from '../services/MeetupEventService';
+import EventbriteEventService from '../services/EventbriteEventService';
 
-export default (event, context, callback) => {
+const MEETUP = 'MEETUP';
+const EVENTBRITE = 'EVENTBRITE';
 
-    meetup.getOpenEvents({
-        text: 'Beer',
-        time: '1489253937000,1489263937000',
-        page: 1,
-    }, function (error, event) {
-        if (error) {
-            console.log(error);
-            callback(null, buildSuccessResponse(error));
-        } else {
-            console.log(event);
-            callback(null, buildSuccessResponse(event));
-        }
-    });
+function getEventsHandler(event, context, callback) {
+    const provider = MEETUP;
+    const service = getEventProvider(provider);
+    service.getEvents({}, response => callback(null, buildSuccessResponse(response)));
+}
 
-    function buildSuccessResponse(body) {
-        return {
-            statusCode: 200,
-            body: body
-        };
+function buildSuccessResponse(data) {
+    return {
+        statusCode: 200,
+        body: data
+    };
+}
+
+function getEventProvider(provider) {
+    let service;
+    switch (provider) {
+        case MEETUP:
+            service = new MeetupEventService();
+            break;
+        case EVENTBRITE:
+            service = new EventbriteEventService();
+            break;
     }
-};
+    return service;
+}
+
+export default getEventsHandler;
+
