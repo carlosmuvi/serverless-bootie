@@ -48,7 +48,9 @@ export default class MeetupEventService extends EventService {
                     {lat: item.venue.lat, lng: item.venue.lon},
                     item.yes_rsvp_count + item.maybe_rsvp_count,
                     5,
-                    SOURCE_NAME)
+                    SOURCE_NAME,
+                    item.venue.address_1
+                )
             })
     }
 }

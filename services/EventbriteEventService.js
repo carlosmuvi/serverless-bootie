@@ -36,7 +36,8 @@ export default class EventbriteEventService extends EventService {
                 new Date(ev.start.utc).getTime(),
                 {lat: venue.latitude, lng: venue.longitude},
                 0, 0,
-                prefix
+                prefix,
+                venue.address.address_1
             );
         });
     }

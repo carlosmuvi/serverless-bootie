@@ -1,5 +1,5 @@
 export default class Event {
-    constructor(id, name, url, time, {lat, lng}, assistants, avgRating, source) {
+    constructor(id, name, url, time, {lat, lng}, assistants, avgRating, source, address) {
         this.id = id;
         this.time = time;
         this.url = url;
@@ -8,5 +8,6 @@ export default class Event {
         this.assistants = assistants;
         this.avgRating = avgRating;
         this.source = source;
+        this.address = address;
     }
 }
