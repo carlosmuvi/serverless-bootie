@@ -36,7 +36,9 @@ export default class MeetupEventService extends EventService {
     }
 
     _mapToDomainModel(response) {
-        return response.results.filter(item => item.venue)
+        return response.results
+            .filter(item => item.venue)
+            .filter(item => item.venue.lat != 0 && item.venue.lon != 0)
             .map(item => {
                 return new Event(
                     `${SOURCE_NAME}-${item.id}`,
