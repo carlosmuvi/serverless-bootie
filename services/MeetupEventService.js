@@ -13,7 +13,7 @@ export default class MeetupEventService extends EventService {
     getEvents({query}, callback) {
         return meetup.getOpenEvents({
             lat: query.lat,
-            lon: query.lon,
+            lon: query.lng,
             time: this._getFormattedTimeInterval(query),
             page: 200
         }, this._onMeetupApiResponse(callback));
