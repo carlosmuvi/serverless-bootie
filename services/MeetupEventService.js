@@ -11,15 +11,13 @@ const SOURCE_NAME = "meetup";
 export default class MeetupEventService extends EventService {
 
     getEvents({query}) {
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             meetup.getOpenEvents({
                 lat: query.lat,
                 lon: query.lng,
                 time: this._getFormattedTimeInterval(query),
                 page: 200
-            }, this._onMeetupApiResponse(resolve, reject))
-
-
+            }, this._onMeetupApiResponse(resolve, reject));
         });
     }
 

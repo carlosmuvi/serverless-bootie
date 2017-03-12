@@ -3,7 +3,7 @@ import EventbriteEventService from '../services/EventbriteEventService';
 
 const MEETUP = 'meetup';
 const EVENTBRITE = 'eventbrite';
-const DEFAULT_PROVIDERS = `${EVENTBRITE}`;
+const DEFAULT_PROVIDERS = `${EVENTBRITE},${MEETUP}`;
 
 function getEventsHandler(event, context, callback) {
     const {providers} = event.query;
