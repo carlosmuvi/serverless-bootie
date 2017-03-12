@@ -10,27 +10,29 @@ const SOURCE_NAME = "meetup";
 
 export default class MeetupEventService extends EventService {
 
-    getEvents({query}, callback) {
-        return meetup.getOpenEvents({
-            lat: query.lat,
-            lon: query.lng,
-            time: this._getFormattedTimeInterval(query),
-            page: 200
-        }, this._onMeetupApiResponse(callback));
+    getEvents({query}) {
+        return new Promise(function (resolve, reject) {
+            meetup.getOpenEvents({
+                lat: query.lat,
+                lon: query.lng,
+                time: this._getFormattedTimeInterval(query),
+                page: 200
+            }, this._onMeetupApiResponse(resolve, reject))
+
+
+        });
     }
 
     _getFormattedTimeInterval(query) {
         return query.startTime + "," + query.endTime;
     }
 
-    _onMeetupApiResponse(callback) {
+    _onMeetupApiResponse(resolve, reject) {
         return (error, response) => {
             if (error) {
-                console.log(error);
-                callback(error);
+                reject(error);
             } else {
-                console.log(response);
-                callback(this._mapToDomainModel(response));
+                resolve(this._mapToDomainModel(response));
             }
         };
     }
