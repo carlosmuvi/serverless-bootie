@@ -15,12 +15,14 @@ export default class EventbriteEventService extends EventService {
         });
     }
 
-    getEvents(params) {
+    getEvents(query) {
         return this.axios.get('/events/search?expand=venue', {
-            'location.latitude': params.lat,
-            'location.longitude': params.lng,
-            'start_date.range_start': params.startDate,
-            'start_date.range_end': params.endDate
+            params: {
+                'location.latitude': query.lat,
+                'location.longitude': query.lng,
+                'start_date.range_start': query.startDate,
+                'start_date.range_end': query.endDate
+            }
         }).then(
             (response) => this._mapResponseToEvents(response));
     }

@@ -1,9 +1,11 @@
 import MeetupEventService from '../services/MeetupEventService';
 import EventbriteEventService from '../services/EventbriteEventService';
+import FacebookEventService from '../services/FacebookEventService';
 
 const MEETUP = 'meetup';
 const EVENTBRITE = 'eventbrite';
-const DEFAULT_PROVIDERS = `${EVENTBRITE},${MEETUP}`;
+const FACEBOOK = 'facebook';
+const DEFAULT_PROVIDERS = `${FACEBOOK},${EVENTBRITE},${MEETUP}`;
 
 function getEventsHandler(event, context, callback) {
     const {providers} = event.query;
@@ -34,6 +36,9 @@ function getEventProvider(provider) {
             break;
         case EVENTBRITE:
             service = new EventbriteEventService();
+            break;
+        case FACEBOOK:
+            service = new FacebookEventService();
             break;
         default:
             throw new Error(`Unrecognized provider: ${provider}`);
