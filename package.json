@@ -9,6 +9,7 @@
     "aws-sdk": "^2.12.0",
     "axios": "^0.15.3",
     "babel-cli": "^6.23.0",
+    "eventbrite-node": "^0.1.1",
     "meetup-api": "1.4.9",
     "serverless": "1.8.0",
     "serverless-babel-plugin": "^0.1.3",
