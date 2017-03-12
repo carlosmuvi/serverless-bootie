@@ -1,3 +1,4 @@
+import moment from 'moment';
 import MeetupEventService from '../services/MeetupEventService';
 import EventbriteEventService from '../services/EventbriteEventService';
 import FacebookEventService from '../services/FacebookEventService';
@@ -8,10 +9,15 @@ const FACEBOOK = 'facebook';
 const DEFAULT_PROVIDERS = `${EVENTBRITE},${MEETUP},${FACEBOOK}`;
 
 function getEventsHandler(event, context, callback) {
-    const {providers} = event.query;
+    const query = event.query;
+    const {providers, startDate, endDate} = query;
+    if (!endDate) {
+        query.startDate = moment(startDate).startOf('day').toISOString().split('.')[0];
+        query.endDate = moment(startDate).endOf('day').milliseconds(0).toISOString().split('.')[0];
+    }
     const providerServices = getProviderServices(providers || DEFAULT_PROVIDERS);
     Promise.all(providerServices.map(service => {
-        return service.getEvents({query: event.query});
+        return service.getEvents({query});
     })).then(providerResponses => {
         callback(null, providerResponses.reduce((acc, events) => {
             return acc
