@@ -22,9 +22,6 @@ export default class MeetupEventService extends EventService {
     }
 
     _getFormattedTimeInterval(query) {
-        console.log('---------------');
-        console.log(query);
-        console.log('---------------');
         return query.startTime + "," + query.endTime;
     }
 

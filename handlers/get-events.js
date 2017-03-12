@@ -25,9 +25,6 @@ function getEventsHandler(event, context, callback) {
                 .sort((a, b) => b.time - a.time)
         }, []));
     }).catch(error => {
-        console.log('------------------------');
-        console.log(error);
-        console.log('------------------------');
         callback(null, error);
     });
 }
