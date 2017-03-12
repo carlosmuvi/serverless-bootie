@@ -15,11 +15,13 @@ export default class EventbriteEventService extends EventService {
         });
     }
 
-    getEvents(query) {
-        return this.axios.get('/events/search?expand=venue', {
+    getEvents({query}) {
+        return this.axios.get('/events/search', {
             params: {
+                expand: 'venue',
                 'location.latitude': query.lat,
                 'location.longitude': query.lng,
+                'location.within': '10km',
                 'start_date.range_start': query.startDate,
                 'start_date.range_end': query.endDate
             }
@@ -28,7 +30,7 @@ export default class EventbriteEventService extends EventService {
     }
 
     _mapResponseToEvents(response) {
-        return response.data.events.filter(ev => ev.venue).map(ev => {
+        return response.data.events.filter(ev => ev.venue && ev.venue.latitude).map(ev => {
             const prefix = 'eventbrite';
             const {venue} = ev;
             return new Event(
@@ -36,7 +38,7 @@ export default class EventbriteEventService extends EventService {
                 ev.name.text,
                 ev.url,
                 new Date(ev.start.utc).getTime(),
-                {lat: venue.latitude, lng: venue.longitude},
+                {lat: parseFloat(venue.latitude), lng: parseFloat(venue.longitude)},
                 0, 0,
                 prefix,
                 venue.address.address_1

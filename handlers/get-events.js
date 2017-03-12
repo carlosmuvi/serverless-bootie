@@ -5,7 +5,7 @@ import FacebookEventService from '../services/FacebookEventService';
 const MEETUP = 'meetup';
 const EVENTBRITE = 'eventbrite';
 const FACEBOOK = 'facebook';
-const DEFAULT_PROVIDERS = `${FACEBOOK},${EVENTBRITE},${MEETUP}`;
+const DEFAULT_PROVIDERS = `${EVENTBRITE},${MEETUP},${FACEBOOK}`;
 
 function getEventsHandler(event, context, callback) {
     const {providers} = event.query;
@@ -19,6 +19,9 @@ function getEventsHandler(event, context, callback) {
                 .sort((a, b) => b.time - a.time)
         }, []));
     }).catch(error => {
+        console.log('------------------------');
+        console.log(error);
+        console.log('------------------------');
         callback(null, error);
     });
 }

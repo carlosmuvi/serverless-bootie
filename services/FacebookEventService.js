@@ -2,7 +2,7 @@ import axios from 'axios';
 import Event from '../domain/Event';
 import EventService from './EventService';
 import EventSearch from 'facebook-events-by-location-core';
-const FACEBOOK_ACCESS_TOKEN = 'EAACL1lbHAEsBAFZAtBzb2PwGYS7heniGKZBL0nS0d7Pe6ZBaICWpcqMzez0jaZClcxzt7gt3z30u6EWNgrGidzxVFGbm1ubncYmmvTAr5LR48yBSPBV1xnBFrCSpbobd3ROjXutUEe6V8ibIAUGctEBok8DWcZCtH5rZCdTtId04e7ZC7Bf093r7Etn2vshokAZD';
+const FACEBOOK_ACCESS_TOKEN = 'EAACL1lbHAEsBABSgBiJrEcj8TZCmsZBSAgdcsskZAZCSEAZCC1NgZC8tgznm1FVAK3xzFPPx43CTMWhJrnR0term1Ex6x2hZAPxUSEJD4ZBQaN6FI7u120RfUSaKP3ZC0VIfijdKI7UZAMJuYtIbLqZCBIqZCp1j0wYG6NobRloPAXBpfxW4gC4TL0aGu4VExaObx50ZD';
 
 export default class FacebookEventService extends EventService {
 
@@ -31,6 +31,7 @@ export default class FacebookEventService extends EventService {
         return response.events.filter(ev => ev.venue && ev.venue.location).map(ev => {
             const prefix = 'facebook';
             const {venue} = ev;
+            const {location: l} = venue;
             return new Event(
                 `${prefix}-${ev.id}`,
                 ev.name,
@@ -38,7 +39,8 @@ export default class FacebookEventService extends EventService {
                 new Date(ev.startTime).getTime(),
                 {lat: venue.location.latitude, lng: venue.location.longitude},
                 ev.stats.attending + ev.stats.maybe, 0,
-                prefix
+                prefix,
+                `${l.street}, ${l.zip} ${l.city} ${l.state}, ${l.country}`
             );
         });
     }
